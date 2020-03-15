@@ -555,6 +555,48 @@
   <build>
     <defaultGoal>clean verify apache-rat:check checkstyle:check clirr:check javadoc:javadoc</defaultGoal>
     <plugins>
+        <plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${commons.jacoco.version}</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							 <!--Sets the path to the file which contains the execution data.-->
+							<dataFile>target/jacoco.exec</dataFile>
+							 <!--Sets the output directory for the code coverage report.-->
+							<outputDirectory>target/jacoco-ut</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+    	<plugin>
+		<groupId>org.pitest</groupId>
+		<artifactId>pitest-maven</artifactId>
+		<version>1.4.3</version>
+        <executions>
+			<execution>
+				<id>pit-report</id>
+				<!-- optional, this example attached the goal into mvn test phase -->
+				<phase>test</phase>
+				<goals>
+					<goal>mutationCoverage</goal>
+				</goals>
+			</execution>
+		</executions>
+		
+        </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
